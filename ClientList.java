@@ -10,16 +10,17 @@ public class ClientList {
         sortedClients.sort(Comparator.comparing((c) -> c.id));
     }
 
-    public Optional<Client> linearSearch(int clientId) {
+    public Client linearSearch(int clientId) {
         for (Client c : sortedClients) {
             if (c.id == clientId) {
-                return Optional.of(c);
+                return c;
             }
         }
-        return Optional.empty();
+        System.out.println("Client ID not found for linear search");
+        return null;
     }
 
-    public Optional<Client> binarySearch(int clientId) {
+    public Client binarySearch(int clientId) {
         int low = 0;
         int high = sortedClients.size() - 1;
 
@@ -30,10 +31,10 @@ public class ClientList {
             } else if (sortedClients.get(split).id > clientId) {
                 high = split - 1;
             } else if (sortedClients.get(split).id == clientId) {
-                return Optional.of(sortedClients.get(split));
+                return sortedClients.get(split);
             }
         }
 
-        return Optional.empty();
+        return null;
     }
 }
