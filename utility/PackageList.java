@@ -1,16 +1,18 @@
+package utility;
+
 import java.util.Comparator;
 import java.util.List;
 
 public class PackageList {
-    private List<Package> sortedPackages;
+    private final List<utility.Package> sortedPackages;
 
-    public PackageList(List<Package> packages) {
+    public PackageList(List<utility.Package> packages) {
         this.sortedPackages = packages;  // Sort by ID so we can do binary search
         sortedPackages.sort(Comparator.comparing((c) -> c.id));
     }
 
-    public Package linearSearch(int packageId) {
-        for (Package p : sortedPackages) {
+    public utility.Package linearSearch(int packageId) {
+        for (utility.Package p : sortedPackages) {
             if (p.id == packageId) {
                 return p;
             }
@@ -19,12 +21,11 @@ public class PackageList {
         return null;
     }
 
-    public Package binarySearch(int packageId) {
+    public utility.Package binarySearch(int packageId) {
         int low = 0;
         int high = sortedPackages.size() - 1;
-
         while (low <= high) {
-            int split = low  + ((high - low) / 2);
+            int split = low + ((high - low) / 2);
             if (sortedPackages.get(split).id < packageId) {
                 low = split + 1;
             } else if (sortedPackages.get(split).id > packageId) {
@@ -34,7 +35,6 @@ public class PackageList {
                 return sortedPackages.get(split);
             }
         }
-
         return null;
     }
 }

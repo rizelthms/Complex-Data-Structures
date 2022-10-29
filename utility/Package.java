@@ -1,3 +1,5 @@
+package utility;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,17 +13,15 @@ public class Package {
     public double weight;
     public Date entryDate;
     public Client client;
-    // public int clientId;
 
-    static Package fromCsvLine(List<String> parts) {
-
+    public static Package fromCsvLine(List<String> parts) {
         Package p = new Package();
         p.id = Integer.parseInt(parts.get(0));
         p.length = Integer.parseInt(parts.get(1));
         p.breadth = Integer.parseInt(parts.get(2));
         p.height = Integer.parseInt(parts.get(3));
         p.weight = Double.parseDouble(parts.get(4));
-        SimpleDateFormat fmt = new SimpleDateFormat("d-mm-yyyy");
+        SimpleDateFormat fmt = new SimpleDateFormat("d-MM-yyyy");
         try {
             p.entryDate = fmt.parse(parts.get(5));
         } catch (ParseException e) {
@@ -37,3 +37,4 @@ public class Package {
                 id, length, breadth, height, weight, entryDate, this.client.id);
     }
 }
+
