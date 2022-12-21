@@ -2,8 +2,10 @@ package week3;
 
 import utility.Client;
 import utility.Package;
+import week1.LinkedList;
 import week1.Week1;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Week3 {
@@ -11,10 +13,16 @@ public class Week3 {
         Scanner sc = new Scanner(System.in);
         AVLTree clientTree = new AVLTree();
         AVLTree packageTree = new AVLTree();
-        for (Client client : Week1.readClientsFromCsv()) {
+
+        LinkedList clients = Week1.readClientsFromCsv();
+        LinkedList packages = Week1.readPackagesFromCsv();
+        List<Client> clientsArray = clients.array();
+        List<Package> packagesArray = packages.array();
+
+        for (Client client : clientsArray) {
             clientTree.insertElement(client.id, client);
         }
-        for (Package packageElem : Week1.readPackagesFromCsv()) {
+        for (Package packageElem : packagesArray) {
             packageTree.insertElement(packageElem.id, packageElem);
         }
         int userOption = 0;

@@ -3,6 +3,7 @@ package week4;
 import utility.Client;
 import utility.ClientWithPackageCount;
 import utility.Package;
+import week1.LinkedList;
 import week1.Week1;
 
 import java.text.ParseException;
@@ -15,10 +16,16 @@ public class Week4 {
         SimpleDateFormat dateParser = new SimpleDateFormat("d-MM-yyyy");
         Map <Client, List<Package>> clientPackageAdjacencyList = new HashMap<>();
         Set <Date> entryDates = new HashSet<>();
-        for (Client client : Week1.readClientsFromCsv()) {
+
+        LinkedList clientsList = Week1.readClientsFromCsv();
+        LinkedList packagesList = Week1.readPackagesFromCsv();
+        List<Client> clientsArray = clientsList.array();
+        List<Package> packagesArray = packagesList.array();
+
+        for (Client client : clientsArray) {
             clientPackageAdjacencyList.put(client, new ArrayList<>());
         }
-        for (Package packageE : Week1.readPackagesFromCsv()) {
+        for (Package packageE : packagesArray) {
             entryDates.add(packageE.entryDate);
             List<Package> packages = clientPackageAdjacencyList.getOrDefault(packageE.client, new ArrayList<>());
             packages.add(packageE);
