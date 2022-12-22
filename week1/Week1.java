@@ -12,8 +12,8 @@ import java.util.Scanner;
 
 public class Week1 {
 
-    static final String CLIENTS_FILE = "CDS_code/resources/Clients.csv";
-    static final String PACKAGES_FILE = "CDS_code/resources/Packages.csv";
+    static final String CLIENTS_FILE = "resources/Clients.csv";
+    static final String PACKAGES_FILE = "resources/Packages.csv";
     static final String CSV_DELIMITER = ";";
     static final Scanner scan = new Scanner(System.in);
     static long startTime;

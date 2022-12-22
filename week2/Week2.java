@@ -15,8 +15,8 @@ import java.util.Scanner;
 public class Week2 {
     static HashMap<Integer, Client> clientHashMap;
     static HashMap<Integer, Package> packageHashMap;
-    static final String CLIENTS_FILE = "CDS_code/resources/Clients.csv";
-    static final String PACKAGES_FILE = "CDS_code/resources/Packages.csv";
+    static final String CLIENTS_FILE = "resources/Clients.csv";
+    static final String PACKAGES_FILE = "resources/Packages.csv";
 
     public static void main(String[] args) {
         final Scanner scan = new Scanner(System.in);
@@ -30,6 +30,8 @@ public class Week2 {
         //Read data into data structures
         LinkedList clients = Week1.readClientsFromCsv();
         LinkedList packages = Week1.readPackagesFromCsv();
+        clients.sortByID();
+        packages.sortByID();
         clientHashMap = readClientsHashMap();
         packageHashMap = readPackagesHashMap();
         System.out.println();
