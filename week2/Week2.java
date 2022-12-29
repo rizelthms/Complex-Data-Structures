@@ -2,22 +2,15 @@ package week2;
 
 import utility.Client;
 import utility.Package;
+import utility.Inputs;
+import utility.DataSources;
 import week1.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class Week2 {
-    static HashMap<Integer, Client> clientHashMap;
-    static HashMap<Integer, Package> packageHashMap;
-    static final String CLIENTS_FILE = "resources/Clients.csv";
-    static final String PACKAGES_FILE = "resources/Packages.csv";
-
     public static void main(String[] args) {
         final Scanner scan = new Scanner(System.in);
 
@@ -27,15 +20,28 @@ public class Week2 {
         // Closing Scanner after the use
         scan.close();
 
-        //Read data into data structures
-        LinkedList clients = Week1.readClientsFromCsv();
-        LinkedList packages = Week1.readPackagesFromCsv();
+        // Read data into data structures
+        List<Object> clientList = Inputs.readCSV(DataSources.CLIENTS);
+        List<Object> packageList = Inputs.readCSV(DataSources.PACKAGES);
+        LinkedList clients = new LinkedList();
+        LinkedList packages = new LinkedList();
+        HashMap<Integer, Client> clientHashMap = new HashMap<Integer, Client>();
+        HashMap<Integer, Package> packageHashMap = new HashMap<Integer, Package>();
+
+        for (Object obj : clientList) {
+            Client client = (Client) obj;
+            clients.insert(client);
+            clientHashMap.put(client.id, client);
+        }
+        for (Object obj : packageList) {
+            Package pkg = (Package) obj;
+            packages.insert(pkg);
+            packageHashMap.put(pkg.id, pkg);
+        }
+
         clients.sortByID();
         packages.sortByID();
-        clientHashMap = readClientsHashMap();
-        packageHashMap = readPackagesHashMap();
         System.out.println();
-
 
         System.out.println("LINEAR SEARCH IN CLIENT");
         long startTime = System.nanoTime();
@@ -73,37 +79,4 @@ public class Week2 {
         endTime = System.nanoTime();
         System.out.println("Duration in (ns): " + (double) (endTime - startTime));
     }
-
-    public static HashMap readClientsHashMap() {
-        HashMap<Integer, Client> clientHashMap = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(CLIENTS_FILE))) {
-            br.readLine(); // Skip the header
-            String line;
-            while ((line = br.readLine()) != null) {
-                List<String> parts = Week1.getRecordFromLine(line);
-                Client myClient = Client.fromCsvLine(parts);
-                clientHashMap.put(myClient.id, myClient);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return clientHashMap;
-    }
-
-    public static HashMap readPackagesHashMap(){
-        HashMap<Integer, Package> packageHashMap = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(PACKAGES_FILE))) {
-            br.readLine(); // Skip the header
-            String line;
-            while ((line = br.readLine()) != null) {
-                List<String> parts = Week1.getRecordFromLine(line);
-                Package myPackage = Package.fromCsvLine(parts);
-                packageHashMap.put(myPackage.id, myPackage);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return packageHashMap;
-    }
-
 }
