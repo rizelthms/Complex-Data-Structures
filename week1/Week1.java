@@ -2,33 +2,42 @@ package week1;
 
 import utility.Client;
 import utility.Package;
+import utility.Inputs;
+import utility.DataSources;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Week1 {
-
-    static final String CLIENTS_FILE = "resources/Clients.csv";
-    static final String PACKAGES_FILE = "resources/Packages.csv";
-    static final String CSV_DELIMITER = ";";
     static final Scanner scan = new Scanner(System.in);
+    // Declare variables to store start and end times for measuring duration of operations
     static long startTime;
     static long endTime;
 
     public static void main(String[] args){
-        LinkedList clients = readClientsFromCsv();
-        LinkedList packages = readPackagesFromCsv();
+        // Read data into data structures
+        List<Object> clientList = Inputs.readCSV(DataSources.CLIENTS);
+        List<Object> packageList = Inputs.readCSV(DataSources.PACKAGES);
+        LinkedList clients = new LinkedList();
+        LinkedList packages = new LinkedList();
 
-        //Sort clients list
+        // Iterate over the client list and insert each client object into the clients linked list
+        for (Object obj : clientList) {
+            Client client = (Client) obj;
+            clients.insert(client);
+        }
+        // Iterate over the package list and insert each package object into the packages linked list
+        for (Object obj : packageList) {
+            Package pkg = (Package) obj;
+            packages.insert(pkg);
+        }
+
+        // Sort the clients list by client ID
         System.out.print("SORTING CLIENTS: ");
-        startTime = System.nanoTime();
+        startTime = System.nanoTime();// Store the start time for measuring duration
         clients.sortByID();
-        endTime = System.nanoTime();
-        System.out.println("Duration in (ns): " + (double) (endTime - startTime));
+        endTime = System.nanoTime();// Store the end time for measuring duration
+        System.out.println("Duration in (ns): " + (double) (endTime - startTime));// Print the duration in nanoseconds
         System.out.println();
 
         //Sort packages list
@@ -45,6 +54,7 @@ public class Week1 {
         // Closing Scanner after the use
         scan.close();
         System.out.println();
+
 
 
         System.out.println("RECURSIVE LINEAR SEARCH IN CLIENT");
@@ -110,48 +120,5 @@ public class Week1 {
         endTime = System.nanoTime();
         System.out.println("Duration in (ns): " + (double) (endTime - startTime));
 
-    }
-
-    public static LinkedList readClientsFromCsv() {
-        LinkedList clients = new LinkedList();
-        try (BufferedReader br = new BufferedReader(new FileReader(CLIENTS_FILE))) {
-            br.readLine(); // Skip the header
-            String line;
-            while ((line = br.readLine()) != null) {
-                List<String> parts = getRecordFromLine(line);
-                Client myClient = Client.fromCsvLine(parts);
-                clients.insert(myClient);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return clients;
-    }
-
-    public static LinkedList readPackagesFromCsv() {
-        LinkedList packages = new LinkedList();
-        try (BufferedReader br = new BufferedReader(new FileReader(PACKAGES_FILE))) {
-            br.readLine(); // Skip the header
-            String line;
-            while ((line = br.readLine()) != null) {
-                List<String> parts = getRecordFromLine(line);
-                Package myPackage = Package.fromCsvLine(parts);
-                packages.insert(myPackage);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return packages;
-    }
-
-    public static List<String> getRecordFromLine(String line) {
-        List<String> values = new ArrayList<>();
-        try (Scanner rowScanner = new Scanner(line)) {
-            rowScanner.useDelimiter(CSV_DELIMITER);
-            while (rowScanner.hasNext()) {
-                values.add(rowScanner.next());
-            }
-        }
-        return values;
     }
 }
