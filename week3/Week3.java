@@ -24,8 +24,8 @@ public class Week3 {
             packageTree.insertElement(((Package) obj).id, obj);
         }
 
-        int userOption = 0;
-        while (userOption != 3) {
+        int userOption = -1;
+        while (userOption != 0) {
             System.out.println("\nMenu:\n");
             System.out.println("1. Search client AVLTree by ID");
             System.out.println("2. Search package AVLTree by ID");
