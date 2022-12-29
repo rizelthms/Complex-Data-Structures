@@ -1,10 +1,10 @@
 package week4;
 
+import utility.Inputs;
 import utility.Client;
-import utility.ClientWithPackageCount;
 import utility.Package;
-import week1.LinkedList;
-import week1.Week1;
+import utility.DataSources;
+import utility.ClientWithPackageCount;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,20 +17,20 @@ public class Week4 {
         Map <Client, List<Package>> clientPackageAdjacencyList = new HashMap<>();
         Set <Date> entryDates = new HashSet<>();
 
-        LinkedList clientsList = Week1.readClientsFromCsv();
-        LinkedList packagesList = Week1.readPackagesFromCsv();
-        List<Client> clientsArray = clientsList.array();
-        List<Package> packagesArray = packagesList.array();
+        List<Object> clients = Inputs.readCSV(DataSources.CLIENTS);
+        List<Object> packages = Inputs.readCSV(DataSources.PACKAGES);
 
-        for (Client client : clientsArray) {
-            clientPackageAdjacencyList.put(client, new ArrayList<>());
+        for (Object obj : clients) {
+            clientPackageAdjacencyList.put((Client) obj, new ArrayList<>());
         }
-        for (Package packageE : packagesArray) {
-            entryDates.add(packageE.entryDate);
-            List<Package> packages = clientPackageAdjacencyList.getOrDefault(packageE.client, new ArrayList<>());
-            packages.add(packageE);
-            clientPackageAdjacencyList.put(packageE.client, packages);
+        for (Object obj : packages) {
+            Package pkg = (Package) obj;
+            entryDates.add(pkg.entryDate);
+            List<Package> pkgs = clientPackageAdjacencyList.getOrDefault(pkg.client, new ArrayList<>());
+            pkgs.add(pkg);
+            clientPackageAdjacencyList.put(pkg.client, pkgs);
         }
+
         Date minDate = entryDates.stream().min(Comparator.naturalOrder()).orElseThrow();
         Date maxDate = entryDates.stream().max(Comparator.naturalOrder()).orElseThrow();
         System.out.println(minDate);
@@ -42,9 +42,11 @@ public class Week4 {
         Date userMaxDate = dateParser.parse(sc.next());
         System.out.println("Top 10 recipients from " + userMinDate + " to " + userMaxDate + " are:");
         PriorityQueue<ClientWithPackageCount> pq = new PriorityQueue<>((client1, client2) -> client2.packageCount - client1.packageCount);
+
         for (Map.Entry<Client, List<Package>> entry : clientPackageAdjacencyList.entrySet()) {
             pq.add(new ClientWithPackageCount(entry.getKey(), entry.getValue().size()));
         }
+
         int recipientCount = 10;
         while (!pq.isEmpty() && recipientCount-- > 0) {
             System.out.println(pq.poll());
