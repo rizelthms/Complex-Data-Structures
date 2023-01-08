@@ -11,14 +11,16 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Week7and8 {
-    static final String PACKAGES_FILE = "resources/Packages.csv";
-    static final String CSV_DELIMITER = ";";
+public class Week7 {
+    static final String PACKAGES_FILE="resources/Packages.csv";
+    static final String CSV_DELIMITER=";";
 
 
     public static void main(String[] args) {
 
-        List<Package> packages = readPackagesFromCsv();
+        String regexPattern=null;
+
+        List<Package> packages=readPackagesFromCsv();
 
         System.out.println();
 
@@ -27,28 +29,27 @@ public class Week7and8 {
 
             while (true) {
                 System.out.println("Enter the package ID: ");
-                String regexPattern=scanner.nextLine();
+                regexPattern=scanner.nextLine();
 
                 Pattern pattern=Pattern.compile(regexPattern);
                 Matcher matcher=pattern.matcher(packages.toString());
 
                 boolean found=false;
 
-                while (matcher.find())
-                {
+                while (matcher.find()) {
 
                     System.out.println("The found package " + matcher.group() + " starting at index " + matcher.start()
                             + " and ending at index " + matcher.end());
 
-                    found= true;
+                    found=true;
 
                 }
-                if (!found){
+                if (!found) {
                     System.out.println("Package ID not found!");
                 }
             }
         }
-    }
+}
 
     public static List<Package> readPackagesFromCsv() {
         List<Package> packages = new ArrayList<>();
