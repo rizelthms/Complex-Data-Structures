@@ -1,4 +1,4 @@
-package week4;
+package week4and5;
 
 import utility.Inputs;
 import utility.Client;
@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Week4 {
+
     public static void main(String[] args) throws ParseException {
         Scanner sc = new Scanner(System.in);
         SimpleDateFormat dateParser = new SimpleDateFormat("d-MM-yyyy");
@@ -53,3 +54,4 @@ public class Week4 {
         }
     }
 }
+
